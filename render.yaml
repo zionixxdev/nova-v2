@@ -1,0 +1,18 @@
+# Render blueprint for Nova (static build, no server needed).
+# The free "Static Site" type is enough — see https://render.com/docs/static-sites
+# If you created a Web Service instead, the repo's `npm start` script
+# (node server.js) serves the same build.
+services:
+  - type: web
+    name: nova
+    runtime: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    headers:
+      - path: /sw.js
+        name: Cache-Control
+        value: no-cache
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
